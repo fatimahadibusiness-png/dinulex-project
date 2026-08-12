@@ -115,10 +115,6 @@ def main() -> None:
     max_free_trials = 3
     remaining_trials = max_free_trials - st.session_state.usage_count
 
-    remaining_trials = max_free_trials - st.session_state.usage_count
-
-    remaining_trials = max_free_trials - st.session_state.usage_count
-
     st.title("Research to Sales Review")
     st.write(
         "Enter a topic to run Daniel's research, have Arthur write a "
