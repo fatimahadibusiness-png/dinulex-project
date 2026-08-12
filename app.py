@@ -109,12 +109,6 @@ def main() -> None:
         page_icon="D",
         layout="wide",
     )
-                if "usage_count" not in st.session_state:
-        st.session_state.usage_count = 0
-                    
-    max_free_trials = 3
-    remaining_trials = max_free_trials - st.session_state.usage_count
-
     st.title("Research to Sales Review")
     st.write(
         "Enter a topic to run Daniel's research, have Arthur write a "
@@ -124,8 +118,6 @@ def main() -> None:
 
     with st.sidebar:
         st.header("Pipeline settings")
-            st.info(f"💡 Free trials remaining: {max(0, remaining_trials)} of {max_free_trials}")
-
         source_count = st.slider(
             "Readable sources",
             min_value=2,
@@ -144,27 +136,21 @@ def main() -> None:
         placeholder="What should Daniel research?",
     )
 
-        if st.button("Run research pipeline", type="primary"):
+    if st.button("Run research pipeline", type="primary"):
         cleaned_topic = " ".join(topic.split())
         if not cleaned_topic:
             st.error("Enter a research topic before running the pipeline.")
             return
 
-        if st.session_state.usage_count < max_free_trials:
-            st.session_state.usage_count += 1
-            
-            with st.spinner("Daniel is researching, Arthur is writing, and Lex is reviewing..."):
-                try:
-                    st.session_state["report"] = run_pipeline(
-                        cleaned_topic,
-                        source_count,
-                    )
-                except (RuntimeError, ValueError) as error:
-                    st.error(f"The pipeline could not complete: {error}")
-                    return
-        else:
-            st.error("⚠️ You have exhausted all your free trials (3/3). Please upgrade or contact support to continue.")
-
+        with st.spinner("Daniel is researching, Arthur is writing, and Lex is reviewing..."):
+            try:
+                st.session_state["report"] = run_pipeline(
+                    cleaned_topic,
+                    source_count,
+                )
+            except (RuntimeError, ValueError) as error:
+                st.error(f"The pipeline could not complete: {error}")
+                return
 
     report = st.session_state.get("report")
     if not report:
