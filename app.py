@@ -109,10 +109,12 @@ def main() -> None:
         page_icon="D",
         layout="wide",
     )
-        if "usage_count" not in st.session_state:
+            if "usage_count" not in st.session_state:
         st.session_state.usage_count = 0
 
     max_free_trials = 3
+    remaining_trials = max_free_trials - st.session_state.usage_count
+
     remaining_trials = max_free_trials - st.session_state.usage_count
 
     st.title("Research to Sales Review")
